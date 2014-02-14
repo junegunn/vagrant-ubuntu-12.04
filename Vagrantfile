@@ -19,7 +19,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # config.vm.synced_folder "../data", "/vagrant_data"
 
   config.vm.provision :shell, inline: <<-EOF
-    sudo apt-get install -y git openjdk-7-jre-headless ruby rubygems vim-nox unzip
+    sudo apt-get install -y git openjdk-7-jdk ruby rubygems vim-nox unzip
 
     sudo -u vagrant -H sh -c 'cd ~vagrant; git clone https://github.com/junegunn/dotfiles.git; dotfiles/install'
     sudo -u vagrant -H sh -c 'cd ~vagrant; git clone https://github.com/junegunn/vimfiles.git; vimfiles/install'
