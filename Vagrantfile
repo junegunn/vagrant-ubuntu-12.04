@@ -11,6 +11,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
   config.vm.network :private_network, ip: "192.168.100.100"
+  config.vm.network :forwarded_port, guest: 60010, host: 60011
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -19,10 +20,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # config.vm.synced_folder "../data", "/vagrant_data"
 
   config.vm.provision :shell, inline: <<-EOF
-    sudo apt-get install -y git openjdk-7-jdk ruby rubygems vim-nox unzip
+    sudo apt-get install -y git openjdk-7-jdk ruby rubygems vim-nox unzip maven
 
     sudo -u vagrant -H sh -c 'cd ~vagrant; git clone https://github.com/junegunn/dotfiles.git; dotfiles/install'
     sudo -u vagrant -H sh -c 'cd ~vagrant; git clone https://github.com/junegunn/vimfiles.git; vimfiles/install'
+
+    cat /etc/hosts | sed 's/127.0.1.1/127.0.0.1/g' > /tmp/etc-hosts
+    mv /tmp/etc-hosts /etc/hosts
   EOF
 
   config.vm.provider :virtualbox do |vb|
